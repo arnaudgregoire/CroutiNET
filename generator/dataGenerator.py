@@ -62,6 +62,7 @@ class myDataGeneratorAug(object):
             # print(ID[1][0])
             img1 = misc.imread(ID[1][0])[:610,:]
             x_left = img1.reshape((1,) + img1.shape)
+            #print(x_left.shape)
             x_lefta = left_datagen.flow(x_left, batch_size=1, seed=seed).next()
             #print(x_lefta.shape)
             x_leftb = misc.imresize(x_lefta[0, :], (self.dim_x, self.dim_y))

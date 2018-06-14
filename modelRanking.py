@@ -1,6 +1,7 @@
 from keras import Input, Model, Sequential
 from keras.applications import VGG19
 from keras.layers import Dropout, Flatten, Dense, Subtract, Activation
+import keras.backend
 from keras.optimizers import SGD
 
 IMG_SIZE = 224
@@ -19,7 +20,7 @@ def create_base_network(input_dim):
     m.add(Dropout(0.2))
     m.add(Dense(4096, activation='relu', name="block_converge_3"))
     m.add(Dropout(0.2))
-    m.add(Dense(1, activation='sigmoid', name="block_converge_5k"))
+    m.add(Dense(1, name="block_converge_5k"))
     return m
 
 def create_meta_network(input_dim, base_network):
@@ -32,12 +33,10 @@ def create_meta_network(input_dim, base_network):
     # subtract scores
     diff = Subtract()([left_score, right_score])
 
-    # Pass difference through relu function.
+    # Pass difference through sigmoid function.
     prob = Activation("sigmoid")(diff)
-
-    # Build model.
     model = Model(inputs = [input_left, input_right], outputs = prob)
-    sgd = SGD(lr=1e-4, decay=1e-4, momentum=0.8, nesterov=True)
+    sgd = SGD(lr=1e-6, decay=1e-4, momentum=0.8, nesterov=True)
     model.compile(optimizer = sgd, loss = "binary_crossentropy", metrics=['accuracy'])
 
     return model

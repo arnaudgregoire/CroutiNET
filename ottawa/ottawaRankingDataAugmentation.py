@@ -3,6 +3,7 @@ from random import randint
 
 import numpy as np
 import pandas as pd
+from keras.models import load_model
 
 from generator import dataGenerator as d
 from loader import loadAsScalars
@@ -18,9 +19,9 @@ trainDir = os.path.join(baseDir, "train/train.csv")
 validationDir = os.path.join(baseDir, "validation/validation.csv")
 testDir = os.path.join(baseDir, "test/test.csv")
 roads_loubna_dir = os.path.join(baseDir, "roads_loubna")
-check_point_model = os.path.join(baseDir, 'modelWithDataAugmentation5.h5')
-base_network_save = os.path.join(baseDir, "scoreNetwork.h5")
-ranking_network_save = os.path.join(baseDir, "rankNetwork.h5")
+hyperas_model_dir = os.path.join(baseDir, 'hyperasScoreModel.h5')
+base_network_save = os.path.join(baseDir, "scoreNetworkNoSigmoidHyperas.h5")
+ranking_network_save = os.path.join(baseDir, "rankNetworkNoSigmoidHyperas.h5")
 histories = []
 
 
@@ -37,7 +38,7 @@ yes = duelsDF[mask_yes]
 mask_no = duelsDF['winner'] == '0'
 no = duelsDF[mask_no]
 
-base_network = create_base_network(INPUT_DIM)
+base_network = load_model(hyperas_model_dir)
 model = create_meta_network(INPUT_DIM, base_network)
 
 validationLeft, validationRight, validationLabels = loadAsScalars(validationDir)
@@ -86,17 +87,8 @@ for iteration in range(n_iter):
     print('X,y created')
     # zero center images
     X = np.array(X)
-    #X = X/255
-
     print('X as arrray created')
-    # Fitting the model. Here you can see how the call to model fit works.  Note the validation data comes from
-    # preloaded numpy arrays.
 
-    #print('one hot encoding ...')
-    #y = to_categorical(y)
-
-    #if iteration != 0:
-    #    model.load_weights(check_point_weights)
 
     history = model.fit(
         [X[0], X[1]],
@@ -110,7 +102,3 @@ show(histories, False)
 
 base_network.save(base_network_save)
 model.save(ranking_network_save)
-
-#tuned = load_model(check_point_model)
-#result = tuned.evaluate([validationLeft, validationRight], validationLabels)
-#print(result)

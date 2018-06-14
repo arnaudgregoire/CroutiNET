@@ -10,7 +10,7 @@ baseDir       = r"D:\Arnaud\data_croutinet\ottawa\data"
 trainDir      = os.path.join(baseDir, "train/train.csv")
 validationDir = os.path.join(baseDir, "validation/validation.csv")
 
-base_network_save = os.path.join(baseDir, "scoreNetwork.h5")
+base_network_save = os.path.join(baseDir, "scoreNetworkNoSigmoid.h5")
 
 trainLeft, trainRight, trainLabels                = loadAsScalars(trainDir)
 validationLeft, validationRight, validationLabels = loadAsScalars(validationDir)
