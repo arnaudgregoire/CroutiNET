@@ -1,13 +1,3 @@
-"""
-Script modified from amaury's downloader.py.  Specifically this randomly selects a point within a road segment for each road segment.
-Then, from that list of random points, a subset is randomly selected for downlading.  For each point with more than one
-available panorama, a single one is randomly selected for download at a given location.
-A shapefile must be available with the random points and must contain the downstreet bearing as well as a field that identifies
-each road segment.
-I used polyline to segment tool in arcgis, followed by the add geometry bearing tool and finally the vertices to segments and a spatial join from segments to vertices
-to create the shapefile used here.
-"""
-
 import numpy as np
 from scipy import misc
 #import gist
@@ -16,6 +6,17 @@ from osgeo import ogr
 import random
 import pandas as pan
 import os
+
+
+'''
+Script modified from amaury's downloader.py.  Specifically this randomly selects a point within a road segment for each road segment.
+Then, from that list of random points, a subset is randomly selected for downlading.  For each point with more than one
+available panorama, a single one is randomly selected for download at a given location.
+A shapefile must be available with the random points and must contain the downstreet bearing as well as a field that identifies
+each road segment.
+I used polyline to segment tool in arcgis, followed by the add geometry bearing tool and finally the vertices to segments and a spatial join from segments to vertices
+to create the shapefile used here.
+'''
 
 API_KEY_1 = "your_api_key"
 API_KEY_2 = "your_api_key"

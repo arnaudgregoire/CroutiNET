@@ -10,11 +10,15 @@ from loader import loadAsScalars
 from modelRanking import create_base_network, create_meta_network
 from representation.representation import show
 
+"""
+File used to train ScoreCroutinet with data augmentation
+"""
+#Define the img size
 IMG_SIZE  = 224
 INPUT_DIM = (IMG_SIZE, IMG_SIZE, 3)
 
+#Define directories
 baseDir = r"D:\Arnaud\data_croutinet\ottawa\data"
-
 trainDir = os.path.join(baseDir, "train/train.csv")
 validationDir = os.path.join(baseDir, "validation/validation.csv")
 testDir = os.path.join(baseDir, "test/test.csv")
@@ -38,7 +42,9 @@ yes = duelsDF[mask_yes]
 mask_no = duelsDF['winner'] == '0'
 no = duelsDF[mask_no]
 
+# Here we load the hyperas optimiszed version of ScoreCroutinet
 base_network = load_model(hyperas_model_dir)
+# On top of it we add the Ranking one who teach ScoreCroutinet how to score
 model = create_meta_network(INPUT_DIM, base_network)
 
 validationLeft, validationRight, validationLabels = loadAsScalars(validationDir)

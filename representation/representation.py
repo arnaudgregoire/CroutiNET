@@ -1,6 +1,12 @@
 import matplotlib.pyplot as plt
 
 def smooth_curve(points, factor=0.8):
+    """
+    Smoothing the curve of a plot
+    :param points: the points to smooth
+    :param factor: the factor of smoothing
+    :return: the smoothing points
+    """
     smoothed_points = []
     for point in points:
         if smoothed_points:
@@ -12,6 +18,12 @@ def smooth_curve(points, factor=0.8):
 
 
 def show(listHistory, smooth):
+    """
+    show in matplotlib resuts the results of training models with data augmentation
+    :param listHistory:
+    :param smooth: boolean to knwo if the user want to have his points smoothed or not
+    :return:
+    """
     acc = []
     val_acc = []
     loss = []
@@ -48,6 +60,11 @@ def show(listHistory, smooth):
     plt.show()
 
 def showPictures(pictures):
+    """
+    show data generated pictures just to check if they are correct
+    :param pictures:
+    :return:
+    """
     plt.figure()
     for i in range(1,pictures.shape[0] + 1):
         plt.subplot(2,2,i)

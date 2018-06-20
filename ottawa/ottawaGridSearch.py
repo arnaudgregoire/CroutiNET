@@ -14,10 +14,21 @@ import numpy as np
 import pandas as pd
 import os
 
+"""
+Hyper parameters optimisation using Hyperopt and Hyperas for ComparaisonCroutinet
+
+Compute hyper parameters optimisation on given model and save it
+
+"""
 baseDir = r"D:\Arnaud\data_croutinet\ottawa\data"
 model_save = os.path.join(baseDir, "bestModel.h5")
 
 def data():
+    """
+    Here we load the training set and the validation set with their labels without any data augmentation
+    In fact, we don't want data augmentation to influence the optimisation of hyperparameters
+    :return: training set, validation set, training labels, validation labels
+    """
     baseDir = r"D:\Arnaud\data_croutinet\ottawa\data"
     trainDir = os.path.join(baseDir, "train/train.csv")
     validationDir = os.path.join(baseDir, "validation/validation.csv")
@@ -33,6 +44,15 @@ def data():
 
 
 def model(X_train, X_test, y_train, y_test):
+    """
+    Here is the function that hyperas will call to optimize our hyperparameter, all variables in double brackets "{{"
+    will be optmize by hyperas
+    :param X_train: the training set
+    :param X_test: the validation set
+    :param y_train: the training labels
+    :param y_test: the validation labels
+    :return: the accuracy of the model after the fit, a boolean to know if everithing works fine, the model that we want to save (here ComparaisonCroutinet)
+    """
     model = Sequential()
     model.add(con_model())
     model.add(Conv2D({{choice([64, 128, 256, 512])}}, (3, 3), activation='relu', padding='same', name="block_converge_2"))  # ,input_shape=(IMG_SIZE, IMG_SIZE, 3)))

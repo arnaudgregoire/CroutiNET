@@ -2,6 +2,10 @@ from PIL import Image
 import os
 import csv
 
+"""
+File used to clean wrong or error pictures in a given folder
+"No images found" pictures have a special size and thats how we detect them
+"""
 baseDir = "C:/Users/msawada/Desktop/arnaud/croutinet/placePulse/data"
 
 wealthyDir = os.path.join(baseDir,"votesWealthy.csv")

@@ -9,11 +9,25 @@ from hyperas.distributions import choice, uniform
 from loader import loadAsScalars
 from modelRanking import create_meta_network
 
+
+"""
+Hyper parameters optimisation using Hyperopt and Hyperas for ScoreCroutinet
+
+Compute hyper parameters optimisation on given model and save it
+
+"""
+
+
 baseDir = r"D:\Arnaud\data_croutinet\ottawa\data"
 model_save = os.path.join(baseDir, "hyperasScoreModel.h5")
 
 
 def data():
+    """
+    Here we load the training set and the validation set with their labels without any data augmentation
+    In fact, we don't want data augmentation to influence the optimisation of hyperparameters
+    :return: training set, validation set, training labels, validation labels
+    """
     baseDir = r"D:\Arnaud\data_croutinet\ottawa\data"
     trainDir = os.path.join(baseDir, "train/train.csv")
     validationDir = os.path.join(baseDir, "validation/validation.csv")
@@ -28,6 +42,16 @@ def data():
     return X_train, X_test, y_train, y_test
 
 def model(X_train, X_test, y_train, y_test):
+    """
+    Here is the function that hyperas will call to optimize our hyperparameter, all variables in double brackets "{{"
+    will be optmize by hyperas
+    :param X_train: the training set
+    :param X_test: the validation set
+    :param y_train: the training labels
+    :param y_test: the validation labels
+    :return: the accuracy of the model after the fit, a boolean to know if everithing works fine, the model that we want to save
+     (here ScoreCroutinet)
+    """
     IMG_SIZE = 224
     INPUT_DIM = (IMG_SIZE, IMG_SIZE, 3)
     feature_extractor = VGG19(weights='imagenet', include_top=False, input_shape=INPUT_DIM)

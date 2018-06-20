@@ -7,17 +7,26 @@ import csv
 import math
 
 def truncate(number, digits) -> float:
+    """
+    truncate a float number to another float number wth the correct number of digits
+    :param number: the float number
+    :param digits: the number of digits that this number shoud have
+    :return: the trucated number
+    """
     stepper = pow(10.0, digits)
     return math.trunc(stepper * number) / stepper
 
+# Define picture size
 IMG_SIZE  = 224
 INPUT_DIM = (IMG_SIZE, IMG_SIZE, 3)
 
+#Define Directories
 baseDir = r"D:\Arnaud\data_croutinet\ottawa\data"
 roadsDir = os.path.join(baseDir, "roads")
 bestModel = os.path.join(baseDir, 'scoreNetworkNoSigmoid.h5')
 scoreSave = os.path.join(baseDir,"scores2.csv")
 
+#We load all roads pictues names of ottawa
 imagesNames = [f for f in os.listdir(roadsDir)]
 
 pictures = []
@@ -25,6 +34,7 @@ pictures = []
 print("loading model")
 model = load_model(bestModel)
 
+# Here we load in a big array all pictures as arrays (a & b are just to print the % of loading)
 i=0
 a=0
 b=0
@@ -46,8 +56,10 @@ pictures = preprocess_input(x=np.expand_dims(pictures.astype(float), axis=0))[0]
 print("pictures values as float32")
 pictures = pictures.astype('float32')
 
+# We predict the score of each pictures using ScoreCroutinet
 prediction = model.predict(pictures)
 
+#We save those score in a csv
 with open(scoreSave, 'w') as csvfileWriter:
     writer = csv.writer(csvfileWriter)
     for k in range(len(imagesNames)):

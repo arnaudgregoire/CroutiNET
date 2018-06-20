@@ -13,6 +13,9 @@ import numpy as np
 import pandas as pd
 import os
 from representation.representation import show
+"""
+File used to train ComparaisonCroutinet with data augmentation
+"""
 
 IMG_SIZE = 224
 
@@ -40,6 +43,7 @@ yes = duelsDF[mask_yes]
 mask_no = duelsDF['winner'] == '0'
 no = duelsDF[mask_no]
 
+# Here we load the ComparaisonCroutinet models optimized by hyperas
 model = load_model(bestModel)
 sgd = SGD(lr=1e-6, decay=1e-4, momentum=0.8437858241496619, nesterov=True)
 model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])

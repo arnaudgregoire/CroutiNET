@@ -15,6 +15,10 @@ import os
 from representation.representation import show
 from model3 import converge_model
 
+
+'''
+This file is used for train ComparaisonCroutinet with Data augmentation
+'''
 IMG_SIZE = 224
 
 baseDir = r"D:\Arnaud\data_croutinet\ottawa\data"

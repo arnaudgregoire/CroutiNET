@@ -4,6 +4,11 @@ import streetview
 from download.sawada import api_download2
 from scipy import misc
 
+
+"""
+Script used to download all pictures corresponding to locations of placePulse points
+"""
+
 baseDir = "C:/Users/msawada/Desktop/arnaud/croutinet/placePulse/"
 wealthyDir = os.path.join(baseDir,"votesWealthy.csv")
 imgDir = os.path.join(baseDir,"img")
