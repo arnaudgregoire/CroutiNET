@@ -31,8 +31,8 @@ class myDataGeneratorAug(object):
                 # Generate data
                 X1, X2, y = self.__data_generation(labels, list_IDs_temp, seed, datagenargs)
                 #print(list_IDs_temp)
-                X1 = preprocess_input(x=np.expand_dims(X1.astype(float), axis=0))[0]
-                X2 = preprocess_input(x=np.expand_dims(X2.astype(float), axis=0))[0]
+                #X1 = preprocess_input(x=np.expand_dims(X1.astype(float), axis=0))[0]
+                #X2 = preprocess_input(x=np.expand_dims(X2.astype(float), axis=0))[0]
 
                 yield ([X1, X2], y)
 

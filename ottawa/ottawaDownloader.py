@@ -18,13 +18,14 @@ I used polyline to segment tool in arcgis, followed by the add geometry bearing 
 to create the shapefile used here.
 '''
 
-API_KEY_1 = "your_api_key"
-API_KEY_2 = "your_api_key"
+API_KEY_1 = ""
+API_KEY_2 = ""
+API_KEY_3 = ""
 
 # ------------------------------------------------------------------------------
 
-base_dir = r"C:\Users\msawada\Desktop\arnaud\croutinet\ottawa"
-shp_dir = os.path.join(base_dir, "shp")
+base_dir = r"D:\Arnaud\data_croutinet\ottawa\data"
+shp_dir = os.path.join(base_dir, "roads_points_shp")
 
 """
 Downloads Google StreetView images of random points in Ottawa
@@ -32,7 +33,7 @@ Downloads Google StreetView images of random points in Ottawa
 """
 
 # Output folder for panaorama images
-DIRECTORY = os.path.join(base_dir, "roads")
+DIRECTORY = os.path.join(base_dir, "recent_roads")
 
 # Shapefile with points on roads with bearing of roads and segment grouping variable. There 105303 points in this file
 ds = ogr.Open(os.path.join(shp_dir,"roadpointswithbearing2.dbf"))
@@ -73,7 +74,7 @@ ransample=tt['idx'].tolist()
 # also write a csv file to map locations for validation
 
 def download(start_idx, end_idx, api_key):
-    with open(os.path.join(base_dir, "roads_dictionnary.csv"), 'a') as f:
+    with open(os.path.join(base_dir, "roads_recent_dictionnary.csv"), 'a') as f:
         for i in range(start_idx, end_idx) :#range(0,tt.shape[0])
 
             print('%.2f' % ((i - start_idx) * 100 / (end_idx - start_idx)) + " %")
@@ -90,14 +91,20 @@ def download(start_idx, end_idx, api_key):
             # Get the number of panaoramas at the location
             panIds = streetview.panoids(lat, lon)
 
+            pid = 0
+            for i in range(len(panIds)):
+                if("year" in panIds[i]):
+                    pid = i
             # Randomly select one of the n panoramas at this location
             if len(panIds) > 0:
+                print(panIds[pid]["year"])
+                f.write("{},{},{},{},{}\n".format(lon, lat, heading,panIds[pid]["year"], panIds[pid]["panoid"]))
+                streetview.api_download(panIds[pid]["panoid"], heading, DIRECTORY, api_key, fov=80, pitch=0)
 
-                pid = random.randint(0,len(panIds)-1)
-                f.write("{},{},{},{}\n".format(lon, lat, heading, panIds[pid]["panoid"]))
-                img = streetview.api_download(panIds[pid]["panoid"], heading, DIRECTORY, api_key, fov=80, pitch=0)
+download(0, 23000,API_KEY_1)
+download(23001, nsubsample -1, API_KEY_2)
 
-download(0, int(nsubsample/2),API_KEY_1)
-download(int(nsubsample/2) +1 ,nsubsample -1,API_KEY_2)
 
-#download(0,5,API_KEY_2)
+#download(0,2,API_KEY_1)
+#download(3,4,API_KEY_2)
+#download(5,6,API_KEY_3)

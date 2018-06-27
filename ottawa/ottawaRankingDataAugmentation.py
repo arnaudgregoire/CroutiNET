@@ -23,9 +23,8 @@ trainDir = os.path.join(baseDir, "train/train.csv")
 validationDir = os.path.join(baseDir, "validation/validation.csv")
 testDir = os.path.join(baseDir, "test/test.csv")
 roads_loubna_dir = os.path.join(baseDir, "roads_loubna")
-hyperas_model_dir = os.path.join(baseDir, 'hyperasScoreModel.h5')
-base_network_save = os.path.join(baseDir, "scoreNetworkNoSigmoidHyperas.h5")
-ranking_network_save = os.path.join(baseDir, "rankNetworkNoSigmoidHyperas.h5")
+base_network_save = os.path.join(baseDir, "scoreNetworkRetrain.h5")
+ranking_network_save = os.path.join(baseDir, "rankingNetworkRetrain.h5")
 histories = []
 
 
@@ -43,14 +42,14 @@ mask_no = duelsDF['winner'] == '0'
 no = duelsDF[mask_no]
 
 # Here we load the hyperas optimiszed version of ScoreCroutinet
-base_network = load_model(hyperas_model_dir)
+base_network = create_base_network(INPUT_DIM)
 # On top of it we add the Ranking one who teach ScoreCroutinet how to score
 model = create_meta_network(INPUT_DIM, base_network)
 
 validationLeft, validationRight, validationLabels = loadAsScalars(validationDir)
 
 # For batch training, the number of iterations of training model
-n_iter = 50
+n_iter = 150
 for iteration in range(n_iter):
     print(iteration / n_iter)
 
