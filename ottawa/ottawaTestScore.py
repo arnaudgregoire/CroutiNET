@@ -22,9 +22,10 @@ INPUT_DIM = (IMG_SIZE, IMG_SIZE, 3)
 
 #Define Directories
 baseDir = r"D:\Arnaud\data_croutinet\ottawa\data"
-roadsDir = os.path.join(baseDir, "roads")
-bestModel = os.path.join(baseDir, 'scoreNetworkNoSigmoid.h5')
-scoreSave = os.path.join(baseDir,"scores2.csv")
+roadsDir = os.path.join(baseDir, "recent_roads")
+model_dir = os.path.join(baseDir,"models")
+bestModel = os.path.join(model_dir, 'scoreNetworkNoSigmoid.h5')
+scoreSave = os.path.join(baseDir,"scoresRecentRoads.csv")
 
 #We load all roads pictues names of ottawa
 imagesNames = [f for f in os.listdir(roadsDir)]

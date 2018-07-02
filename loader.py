@@ -37,6 +37,8 @@ def loadAsScalars(path):
     leftImages = []
     rightImages = []
     labels = []
+    namesLeft = []
+    namesRight = []
     with open(path, 'r') as csvfileReader:
         reader = csv.reader(csvfileReader, delimiter=',')
         for line in reader:
@@ -44,19 +46,21 @@ def loadAsScalars(path):
                 leftImages.append(loadImageFix(line[0]))
                 rightImages.append(loadImageFix(line[1]))
                 labels.append(int(line[2]))
+                namesLeft.append(line[0])
+                namesRight.append(line[1])
 
     leftImages = np.array(leftImages)
     rightImages = np.array(rightImages)
 
     labels = np.array(labels)
 
-    #leftImages = preprocess_input(x=np.expand_dims(leftImages.astype(float), axis=0))[0]
-    #rightImages = preprocess_input(x=np.expand_dims(rightImages.astype(float), axis=0))[0]
+    leftImages = preprocess_input(x=np.expand_dims(leftImages.astype(float), axis=0))[0]
+    rightImages = preprocess_input(x=np.expand_dims(rightImages.astype(float), axis=0))[0]
 
     #leftImages = leftImages.astype('float32')# / 255
     #rightImages = rightImages.astype('float32')# / 255
 
-    return (leftImages, rightImages, labels)
+    return (leftImages, rightImages, labels, namesLeft, namesRight)
 
 
 def load(path):
