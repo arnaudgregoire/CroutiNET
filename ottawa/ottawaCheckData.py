@@ -44,11 +44,12 @@ ranking_dir = os.path.join(baseDir, "rankingNoSigmoid")
 activation_dir = os.path.join(ranking_dir, "activation")
 check_dir = os.path.join(ranking_dir, "checkdata")
 models_dir = os.path.join(baseDir, "models")
+fake_dir = os.path.join(baseDir,"fake_dataset")
 model = load_model(os.path.join(models_dir, "scoreNetworkNoSigmoid.h5"))
 
 
-def loadImage(name):
-    img  = misc.imread(os.path.join(roads_loubna_dir, name))
+def loadImage(name, dir = roads_loubna_dir):
+    img  = misc.imread(os.path.join(dir, name))
     img  = misc.imresize(img, (IMG_SIZE, IMG_SIZE))
     return img
 
@@ -79,63 +80,96 @@ def heatmap(picture, picture_path):
     return superimposed_img
 
 
+def plotScoresAndHeatmap():
+    validationLeft, validationRight, validationLabels, namesLeft, namesRight = loadAsScalars(validationDir)
 
+    validationLeft_score = model.predict(validationLeft)
+    validationLeft_score = validationLeft_score * (-1)
 
-validationLeft, validationRight, validationLabels, namesLeft, namesRight = loadAsScalars(validationDir)
+    validationRight_score = model.predict(validationRight)
+    validationRight_score = validationRight_score * (-1)
 
-validationLeft_score = model.predict(validationLeft)
-validationLeft_score = validationLeft_score * (-1)
+    prediction = []
+    correct = 0
 
-validationRight_score = model.predict(validationRight)
-validationRight_score = validationRight_score * (-1)
-
-
-prediction = []
-correct = 0
-
-for i in range(len(validationLeft_score)):
-    if validationLeft_score[i] > validationRight_score[i]:
-        if validationLabels[i] == 0:
-            prediction.append("prédiction vraie")
-            correct += 1
+    for i in range(len(validationLeft_score)):
+        if validationLeft_score[i] > validationRight_score[i]:
+            if validationLabels[i] == 0:
+                prediction.append("prédiction vraie")
+                correct += 1
+            else:
+                prediction.append("prédiction fausse")
         else:
-            prediction.append("prédiction fausse")
-    else:
-        if validationLabels[i] == 0:
-            prediction.append("prédiction fausse")
-        else:
-            prediction.append("prédiction vraie")
-            correct += 1
+            if validationLabels[i] == 0:
+                prediction.append("prédiction fausse")
+            else:
+                prediction.append("prédiction vraie")
+                correct += 1
 
-dict = {0: "left winner", 1: "right winner"}
+    dict = {0: "left winner", 1: "right winner"}
 
 
-for i in range(len(validationLabels)):
-    plt.figure()
+    for i in range(len(validationLabels)):
+        plt.figure()
 
-    leftImage = validationLeft[i]
-    rightImage = validationRight[i]
-    leftPath = os.path.join(roads_loubna_dir, namesLeft[i])
-    rightPath = os.path.join(roads_loubna_dir, namesRight[i])
-    heatmapLeft  = heatmap(leftImage, leftPath)
-    heatmapRight = heatmap(rightImage, rightPath)
-    cv2.imwrite(os.path.join(activation_dir, "validationSetLeft" + str(i) + "score" + str(validationLeft_score[i]) +  ".jpg"), heatmapLeft)
-    cv2.imwrite(os.path.join(activation_dir,"validationSetRight" + str(i) + "score" + str(validationRight_score[i]) +  ".jpg"), heatmapRight)
+        leftImage = validationLeft[i]
+        rightImage = validationRight[i]
+        leftPath = os.path.join(roads_loubna_dir, namesLeft[i])
+        rightPath = os.path.join(roads_loubna_dir, namesRight[i])
+        heatmapLeft  = heatmap(leftImage, leftPath)
+        heatmapRight = heatmap(rightImage, rightPath)
+        cv2.imwrite(os.path.join(activation_dir, "validationSetLeft" + str(i) + "score" + str(validationLeft_score[i]) +  ".jpg"), heatmapLeft)
+        cv2.imwrite(os.path.join(activation_dir,"validationSetRight" + str(i) + "score" + str(validationRight_score[i]) +  ".jpg"), heatmapRight)
 
-    plt.subplot(2, 2, 1)
-    plt.title("score : " + str(validationLeft_score[i]))
-    plt.imshow(loadImage(leftPath))
+        plt.subplot(2, 2, 1)
+        plt.title("score : " + str(validationLeft_score[i]))
+        plt.imshow(loadImage(leftPath))
 
-    plt.suptitle(dict[validationLabels[i]] + " : " +  prediction[i], fontsize=16)
+        plt.suptitle(dict[validationLabels[i]] + " : " +  prediction[i], fontsize=16)
 
-    plt.subplot(2, 2 , 2)
-    plt.title("score : " + str(validationRight_score[i]))
-    plt.imshow(loadImage(rightPath))
+        plt.subplot(2, 2 , 2)
+        plt.title("score : " + str(validationRight_score[i]))
+        plt.imshow(loadImage(rightPath))
 
-    plt.subplot(2, 2 , 3)
-    plt.imshow(loadImage(os.path.join(activation_dir, "validationSetLeft" + str(i) + "score" + str(validationLeft_score[i]) +  ".jpg")))
+        plt.subplot(2, 2 , 3)
+        plt.imshow(loadImage(os.path.join(activation_dir, "validationSetLeft" + str(i) + "score" + str(validationLeft_score[i]) +  ".jpg")))
 
-    plt.subplot(2, 2 , 4)
-    plt.imshow(loadImage(os.path.join(activation_dir,"validationSetRight" + str(i) + "score" + str(validationRight_score[i]) +  ".jpg")))
+        plt.subplot(2, 2 , 4)
+        plt.imshow(loadImage(os.path.join(activation_dir,"validationSetRight" + str(i) + "score" + str(validationRight_score[i]) +  ".jpg")))
 
-    plt.savefig(os.path.join(check_dir, "validationSet" + str(i) + ".jpg"))
+        plt.savefig(os.path.join(check_dir, "validationSet" + str(i) + ".jpg"))
+
+
+def plotFakeDataSet():
+    filenames = os.listdir(fake_dir)
+    images = []
+    heatmaps = []
+    for file in filenames:
+        images.append(loadImage(file, fake_dir))
+
+    images = np.array(images)
+    images_preprocess = preprocess_input(x=np.expand_dims(images.astype(float), axis=0))[0]
+    predictions = model.predict(images_preprocess)
+
+    for i in range(len(filenames)):
+        path = os.path.join(fake_dir, filenames[i])
+        heatmaps.append(heatmap(images_preprocess[i], path))
+        cv2.imwrite(os.path.join(fake_dir, "score" +  filenames[i]), heatmaps[i])
+
+    for i in range(len(images)):
+
+        plt.figure()
+        plt.subplot(1, 2, 1)
+        plt.title("score : " + str(predictions[i]))
+        plt.imshow(images[i])
+
+        plt.suptitle(filenames[i], fontsize=16)
+
+        plt.subplot(1, 2 , 2)
+        plt.imshow(loadImage( "score" +  filenames[i],fake_dir))
+        plt.savefig(os.path.join(fake_dir,  "score" +  filenames[i]))
+
+
+
+
+
