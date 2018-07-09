@@ -67,6 +67,8 @@ def load(path):
     leftImages = []
     rightImages = []
     labels = []
+    namesLeft = []
+    namesRight = []
     with open(path, 'r') as csvfileReader:
         reader = csv.reader(csvfileReader, delimiter=',')
         for line in reader:
@@ -74,6 +76,8 @@ def load(path):
                 leftImages.append(loadImage(line[0]))
                 rightImages.append(loadImage(line[1]))
                 labels.append(int(line[2]))
+                namesLeft.append(line[0])
+                namesRight.append(line[1])
 
     leftImages = np.array(leftImages)
     rightImages = np.array(rightImages)
@@ -94,4 +98,4 @@ def load(path):
     print('after')
     print(labels.shape)
 
-    return (leftImages, rightImages, labels)
+    return (leftImages, rightImages, labels, namesLeft, namesRight)

@@ -19,17 +19,18 @@ roads_dictionnary.csv : The second is a dictionnary that contain at least the lo
 base_dir = r"D:\Arnaud\data_croutinet\ottawa\data"
 roads_dictionnary_dir = os.path.join(base_dir, "roads_dictionnary.csv")
 roads_dir = os.path.join(base_dir, "roads")
-scores_dir = os.path.join(base_dir, "scores2.csv")
-merged_dir = os.path.join(base_dir, "merged2.csv")
-modelFolder = os.path.join(base_dir, "rankingNoSigmoid")
+scores_dir = os.path.join(base_dir, "trueskillScores20Duels.csv")
+merged_dir = os.path.join(base_dir, "trueskillScoreLatLong20Duels.csv")
+modelFolder = os.path.join(base_dir, "trueskill20Duels")
 bottom_50_dir = os.path.join(modelFolder, "bottom50")
 top_50_dir = os.path.join(modelFolder, "top50")
 
 # Build 2 dataframes
-score_results = np.loadtxt(scores_dir, str, delimiter=',')
+#score_results = np.loadtxt(scores_dir, str, delimiter=',')
 roads_result = np.loadtxt(roads_dictionnary_dir, str, delimiter=',')
 
-scoresDF = pd.DataFrame(score_results, None, ['name', 'score'])
+#scoresDF = pd.DataFrame(score_results, None, ['name', 'score'])
+scoresDF = pd.read_csv(scores_dir)
 roadsDF = pd.DataFrame(roads_result, None, ['long', 'lat', 'heading', 'id'])
 
 # The name that pictures have is a combinaison of of year/id/heading that we split in 3 column here
@@ -44,12 +45,27 @@ merged = scoresDF.merge(roadsDF, on='id')
 merged.to_csv(merged_dir)
 
 plt.figure()
-plt.title("Histogramme of scores values")
-merged['score'] = pd.to_numeric(merged['score'])
-merged['score'].diff().hist()
+merged['mu'] = pd.to_numeric(merged['mu'])
+plt.hist(merged['mu'].tolist(),50)
+plt.ylabel("Frequence d'apparition")
+plt.xlabel("mu value")
+plt.title("Histogramme of scores values (mu)")
+plt.legend()
+plt.show()
 
-top50 = merged.nlargest(50, 'score')
-bottom50 = merged.nsmallest(50,'score')
+
+plt.figure()
+plt.title("Histogramme of scores values (sigma)")
+merged['sigma'] = pd.to_numeric(merged['sigma'])
+plt.hist(merged['sigma'].tolist(),50)
+plt.ylabel("Frequence d'apparition")
+plt.xlabel("sigma value")
+plt.title("Histogramme of sigma values (sigma)")
+plt.legend()
+plt.show()
+
+top50 = merged.nlargest(50, 'mu')
+bottom50 = merged.nsmallest(50,'mu')
 
 for index, row in top50.iterrows() :
     sh.copy(os.path.join(roads_dir, row['name']),os.path.join(top_50_dir, row['name']))
