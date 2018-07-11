@@ -90,12 +90,10 @@ def load(path):
     leftImages = leftImages.astype('float32')# / 255
     rightImages = rightImages.astype('float32')# / 255
 
-
-
-    print('before')
-    print(labels.shape)
+    #print('before')
+    #print(labels.shape)
     labels = to_categorical(labels)
-    print('after')
-    print(labels.shape)
+    #print('after')
+    #print(labels.shape)
 
     return (leftImages, rightImages, labels, namesLeft, namesRight)

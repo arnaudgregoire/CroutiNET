@@ -59,8 +59,8 @@ croutipoints = [CroutiPoint(imagesNames[i], pictures[i]) for i in range(len(imag
 
 for i in range(len(croutipoints)):
     print(i)
-    contenders = [rd.randint(0,len(croutipoints)-1) for k in range(30)]
-    predictions = model.predict([np.array([croutipoints[i].pixels for k in range(30)]), np.array([croutipoints[contenders[k]].pixels for k in range(30)])])
+    contenders = [rd.randint(0,len(croutipoints)-1) for k in range(100)]
+    predictions = model.predict([np.array([croutipoints[i].pixels for k in range(100)]), np.array([croutipoints[contenders[k]].pixels for k in range(100)])])
     for j in range(len(predictions)):
         if(predictions[j][0] > predictions[j][1]):
             croutipoints[i].rating, croutipoints[j].rating = trueskill.rate_1vs1(croutipoints[i].rating, croutipoints[j].rating)
@@ -78,4 +78,4 @@ df = pd.DataFrame.from_items([('name',[croutipoints[k].name for k in range(len(c
                               ('sigma', [croutipoints[k].rating.sigma for k in range(len(croutipoints))])
                               ])
 
-df.to_csv(os.path.join(baseDir,"trueskillScores20Duels.csv"))
+df.to_csv(os.path.join(baseDir,"trueskillScores200Duels.csv"))
