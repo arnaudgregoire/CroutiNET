@@ -1,0 +1,22 @@
+
+ - ottawaAddLatLong.py : Add to each picture id a latitude / longitude
+ - ottawaAddLatLongYear.py : Add to each picture id a latitude / longitude / year ( case of comparaison of walkability over time)
+ - ottawaCheckData.py : Used to find a biais in the model training by generating heatmaps activations patterns etc ...
+ - ottawaCleaner.py : Used to clean row in dictonaries that are not linked with any pictures
+ - ottawaComparaisonStat.py : Comparaison of old pictures points and newest pictures points
+ - ottawaComputeTrueskillAcc.py : Used to compute the average accuracy of ComparaisonCroutinet with Trueskill (91% on training set)
+ - ottawaDenseTrain.py : Used to train ComparaisonCroutinet network
+ - ottawaDownloader.py : Used to download pictures of ottawas
+ - ottawaGridSearch.py : Hyper parameters optimisation using Hyperopt and Hyperas for ComparaisonCroutinet
+ - ottawaGridSearch2.py : Hyper parameters optimisation using Hyperopt and Hyperas for ComparaisonCroutinet with Dense layers on top
+ - ottawaGridSearchRanking.py :  Hyper parameters optimisation using Hyperopt and Hyperas for ScoreCroutinet
+ - ottawaMultiplePredict.py : Double Check all datas to see if something is wrong during process data augmentation
+ - ottawaNormalize.py : Script used  to normalize the distribution of ScoreCroutinet 
+ - ottawaPreprocess.py : used to preprocess the training validation and test set before split
+ - ottawaRanking.py : Training of scoreCroutinet without data augmentation
+ - ottawaRankingDataAugmentation.py : training of ScoreCroutinet with data augmentation
+ - ottawaSpearmanCorrelation.py : Compute spearman and pearson coefficient to determine the relation between walkscore, bikescore and Croutiscore
+ - ottawaSplitSet.py : Split training datas into train, vaildations, tests
+ - ottawaTestScore.py : Used to predict ScoreCroutinet on all ottawa data
+ - ottawaTrueskillCorrelation.py : used to compute the correlation between ScoreCroutinet and Comparaison Croutinet + trueskill
+ - ottawaTrueskillWalkscoreCorrelation.py : used to compute the correlation between Comparaison Croutinet + trueskill and Walkscore/bikescore

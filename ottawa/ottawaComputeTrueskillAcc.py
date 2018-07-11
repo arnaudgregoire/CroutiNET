@@ -5,6 +5,10 @@ import trueskill
 import random as rd
 import  numpy as np
 
+"""
+Used to compute the average accuracy of ComparaisonCroutinet with Trueskill 0.7831858407079646
+"""
+
 #Define the img size
 from keras.models import load_model
 
@@ -13,7 +17,7 @@ INPUT_DIM = (IMG_SIZE, IMG_SIZE, 3)
 
 #Define directories
 baseDir = r"D:\Arnaud\data_croutinet\ottawa\data"
-trainDir = os.path.join(baseDir, "train/train.csv")
+trainDir = os.path.join(baseDir, "validation/validation.csv")
 roads_loubna_dir = os.path.join(baseDir, "roads_loubna")
 models_dir = os.path.join(baseDir, "models")
 
@@ -59,3 +63,5 @@ for i in range(len(labels)):
         correct += 1
 
 print(correct/len(labels))
+
+# 0.7831858407079646

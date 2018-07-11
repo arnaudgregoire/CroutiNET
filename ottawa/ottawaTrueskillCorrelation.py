@@ -6,6 +6,10 @@ from osgeo import ogr
 import scipy.stats as sc
 import pandas as pd
 
+"""
+used to compute the correlation between ScoreCroutinet and Comparaison Croutinet + trueskill
+"""
+
 base_dir = r"D:\Arnaud\data_croutinet\ottawa\data"
 shp_dir = os.path.join(base_dir, "roads_shp")
 

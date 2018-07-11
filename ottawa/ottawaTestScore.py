@@ -6,6 +6,10 @@ from keras.preprocessing import image
 import csv
 import math
 
+"""
+Used to predict ScoreCroutinet on all ottawa data
+"""
+
 def truncate(number, digits) -> float:
     """
     truncate a float number to another float number wth the correct number of digits

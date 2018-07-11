@@ -2,6 +2,9 @@ import pandas as pd
 import os
 import scipy.stats as sc
 import matplotlib.pyplot as plt
+"""
+Compute spearman and pearson coefficient to determine the relation between walkscore, bikescore and Croutiscore
+"""
 
 base_dir = r"D:\Arnaud\data_croutinet\ottawa\data"
 
