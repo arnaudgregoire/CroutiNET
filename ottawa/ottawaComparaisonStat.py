@@ -35,7 +35,7 @@ plt.legend()
 plt.show()
 
 plt.figure()
-plt.hist(newScores,50)
+plt.hist(oldScores,50)
 plt.title("Histogramme ScoreCroutinet old roads (moyenne :" + str(oldScoresMean) + ")")
 plt.ylabel("Frequence d'apparition")
 plt.xlabel("score")
