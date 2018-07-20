@@ -51,11 +51,11 @@ def loadAsScalars(path):
 
     leftImages = np.array(leftImages)
     rightImages = np.array(rightImages)
-
+    #plt.imshow(leftImages[0])
     labels = np.array(labels)
 
-    leftImages = preprocess_input(x=np.expand_dims(leftImages.astype(float), axis=0))[0]
-    rightImages = preprocess_input(x=np.expand_dims(rightImages.astype(float), axis=0))[0]
+    #leftImages = preprocess_input(x=np.expand_dims(leftImages.astype(float), axis=0))[0]
+    #rightImages = preprocess_input(x=np.expand_dims(rightImages.astype(float), axis=0))[0]
 
     #leftImages = leftImages.astype('float32')# / 255
     #rightImages = rightImages.astype('float32')# / 255
