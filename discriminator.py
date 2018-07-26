@@ -9,6 +9,7 @@ def build_discriminator(height, width, channels):
     x = layers.Conv2D(128, 3)(discriminator_input)
     x = layers.LeakyReLU()(x)
     x = layers.Dropout(0.2)(x)
+    #x = layers.BatchNormalization()(x)
     x = layers.Conv2D(128, 4, strides=2)(x)
     x = layers.LeakyReLU()(x)
     x = layers.Dropout(0.2)(x)

@@ -9,7 +9,6 @@ import matplotlib.pyplot as plt
 from keras.models import load_model
 import keras.backend as K
 import cv2
-from generator import dataGenerator as d
 from loader import loadAsScalars
 
 K.set_learning_phase(False)

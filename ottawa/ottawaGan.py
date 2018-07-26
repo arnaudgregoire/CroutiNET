@@ -14,7 +14,7 @@ latent_dim = 64
 height     = 64
 width      = 64
 channels   = 3
-iterations = 1000000
+iterations = 30000
 batch_size = 20
 
 #Define directories
@@ -22,18 +22,37 @@ baseDir       = r"D:\Arnaud\data_croutinet\ottawa\data"
 trainDir      = os.path.join(baseDir, "train/train.csv")
 validationDir = os.path.join(baseDir, "validation/validation.csv")
 save_dir      = os.path.join(baseDir, "testgan")
+roads_dir     = os.path.join(baseDir, "trueskill20Duels/top2k")
 
 generator = build_generator(latent_dim, channels)
 discriminator = build_discriminator(height, width, channels)
 gan = build_gan(latent_dim, generator, discriminator)
 
-leftImages, rightImages, y_train, namesLeft, namesRight = loadAsScalars(trainDir)
+imagesNames = [f for f in os.listdir(os.path.join(save_dir, roads_dir))]
 
-x_train = np.zeros((leftImages.shape[0],width,height,channels))
+pictures = []
 
-for i in range(leftImages.shape[0]):
-    x_train[i] = sc.imresize(leftImages[i],(width,height))
-    x_train[i] = x_train[i].astype('float32') / 255.
+# Here we load in a big array all pictures as arrays (a & b are just to print the % of loading)
+i = 0
+a = 0
+b = 0
+print("loading pictures")
+for name in imagesNames:
+
+    a = np.floor(i * 100 / len(imagesNames))
+    if a != b:
+        print(str(int(a)) + "%")
+        b = a
+    pictures.append(image.img_to_array(image.load_img(os.path.join(os.path.join(save_dir, roads_dir),name), target_size=(width, height))))
+    i += 1
+
+print("pictures as array")
+pictures = np.array(pictures)
+
+x_train = np.zeros((pictures.shape[0],width,height,channels))
+
+for i in range(pictures.shape[0]):
+    x_train[i] = pictures[i].astype('float32') / 255.
 
 # (x_train, y_train), (_, _) = keras.datasets.cifar10.load_data()
 # x_train = x_train[y_train.flatten() == 6]
@@ -86,7 +105,7 @@ for step in range(iterations):
 
 
     if step % 100 == 0:
-        gan.save_weights('gan.h5')
+        gan.save_weights(os.path.join(save_dir, 'gan.h5'))
 
         print('discriminator loss:', d_loss)
         discriminator_losses.append(d_loss)
@@ -94,9 +113,11 @@ for step in range(iterations):
         print('adversarial loss:', a_loss)
         adversarial_losses.append(a_loss)
 
+
         img = image.array_to_img(generated_images[0] * 255., scale=False)
+
         img.save(os.path.join(save_dir,
-                              'generatedMultiDropout' + str(step) + '.png'))
+                              'generatedMultiDropoutAllPictures2nd' + str(step) + '.png'))
         #img = image.array_to_img(real_images[0] * 255., scale=False)
         #img.save(os.path.join(save_dir,
         #                      'real' + str(step) + '.png'))
