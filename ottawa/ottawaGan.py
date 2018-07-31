@@ -14,8 +14,8 @@ latent_dim = 64
 height     = 64
 width      = 64
 channels   = 3
-iterations = 30000
-batch_size = 20
+iterations = 10000
+batch_size = 10
 
 #Define directories
 baseDir       = r"D:\Arnaud\data_croutinet\ottawa\data"
@@ -117,7 +117,7 @@ for step in range(iterations):
         img = image.array_to_img(generated_images[0] * 255., scale=False)
 
         img.save(os.path.join(save_dir,
-                              'generatedMultiDropoutAllPictures2nd' + str(step) + '.png'))
+                              'generatedMultiDropoutTop' + str(step) + '.png'))
         #img = image.array_to_img(real_images[0] * 255., scale=False)
         #img.save(os.path.join(save_dir,
         #                      'real' + str(step) + '.png'))

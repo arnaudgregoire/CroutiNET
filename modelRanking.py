@@ -8,7 +8,11 @@ IMG_SIZE = 224
 INPUT_DIM = (IMG_SIZE, IMG_SIZE, 3)
 
 def create_base_network(input_dim):
-
+    """
+    The main part of the network, the one who give scores to each pictures
+    :param input_dim: Dimension of input pictures during training
+    :return: keras object model
+    """
     feature_extractor = VGG19(weights='imagenet', include_top=False, input_shape=input_dim)
     for layer in feature_extractor.layers[:18]:
         layer.trainable = False
@@ -24,6 +28,12 @@ def create_base_network(input_dim):
     return m
 
 def create_meta_network(input_dim, base_network):
+    """
+    Secondn network that teach the first how to rank pictures
+    :param input_dim: dimensions of pictures
+    :param base_network: keras model object
+    :return: keras object model
+    """
     input_left = Input(shape=input_dim)
     input_right = Input(shape=input_dim)
 

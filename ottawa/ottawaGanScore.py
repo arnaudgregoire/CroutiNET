@@ -64,7 +64,7 @@ def heatmap(picture, picture_path):
 def computeScore(folder):
     imagesNames = [f for f in os.listdir(os.path.join(save_dir, folder))]
     for i in range(len(imagesNames)-1):
-        if imagesNames[i] == "top"or imagesNames[i] == "bottom" or imagesNames[i] == "heatmaps":
+        if imagesNames[i] == "top"or imagesNames[i] == "bottom" or imagesNames[i] == "heatmaps" or imagesNames[i] == "resized":
             imagesNames.pop(i)
     pictures = []
     # Here we load in a big array all pictures as arrays (a & b are just to print the % of loading)
@@ -116,6 +116,9 @@ def computeScore(folder):
 
     heatmap_directory = os.path.join(directory,"heatmaps")
 
+    if not os.path.exists(heatmap_directory):
+        os.mkdir(heatmap_directory)
+
     for i in range(len(pictures)):
         cv2.imwrite(os.path.join(heatmap_directory,"heatmap" + str(i) + ".jpg"),heatmap(pictures[i],os.path.join(directory, imagesNames[i])))
 
@@ -135,4 +138,4 @@ def computeScore(folder):
         plt.savefig(os.path.join(heatmap_directory,"comparaisonheatmap" + str(i) + "score" + str(scores[i]) +".jpg"))
 
 
-computeScore("top_pictures")
+computeScore("bottom_pictures")
