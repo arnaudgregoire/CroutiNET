@@ -10,7 +10,7 @@ baseDir                 = r"D:\Arnaud\data_croutinet\ottawa\data"
 model_dir               = join(baseDir, "models")
 super_dir               = join(baseDir, "superResolution")
 train_dir               = join(super_dir, "train")
-preprocessed_dir        = join(super_dir, "preprocessed_gaussian_blur")
+preprocessed_dir        = join(super_dir, "preprocessed_gaussian_blur_sigma1")
 preprocessed_train      = join(preprocessed_dir, "train")
 preprocessed_validation = join(preprocessed_dir, "validation")
 
@@ -44,9 +44,9 @@ for f in listdir(train_dir):
     h -= h % 3
     image = image[0:w, 0:h]
 
-    blurred_r = ndimage.gaussian_filter(image[:,:,0],sigma=5)
-    blurred_g = ndimage.gaussian_filter(image[:,:,1], sigma=5)
-    blurred_b = ndimage.gaussian_filter(image[:,:,2], sigma=5)
+    blurred_r = ndimage.gaussian_filter(image[:,:,0],sigma=1)
+    blurred_g = ndimage.gaussian_filter(image[:,:,1], sigma=1)
+    blurred_b = ndimage.gaussian_filter(image[:,:,2], sigma=1)
 
     blurred = np.zeros(image.shape)
 
@@ -64,7 +64,7 @@ for f in listdir(train_dir):
     #
     # scaled_without_blur_nearest = misc.imresize(image, 1.0 / scale, 'nearest')
     # scaled_without_blur_nearest = misc.imresize(scaled_without_blur_nearest, scale / 1.0, 'nearest')
-
+    #
     # plt.figure()
     # plt.title("original")
     # plt.imshow(image)

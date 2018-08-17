@@ -16,12 +16,19 @@ roads_dictionnary.csv : The second is a dictionnary that contain at least the lo
 """
 
 #Define src
+# the main directory
 base_dir = r"D:\Arnaud\data_croutinet\ottawa\data"
+# the file with name of the picture, latiude, longitude like "roads_recent_correct_dictionnary"
 roads_dictionnary_dir = os.path.join(base_dir, "roads_dictionnary.csv")
+# the roads folder with all pictures (that were used during training) like "recent_roads"
 roads_dir = os.path.join(base_dir, "roads")
+# the score csv like "scoresRecentRoads.csv"
 scores_dir = os.path.join(base_dir, "trueskillScores20Duels.csv")
+#the new score csv with the latitude and the longitude
 merged_dir = os.path.join(base_dir, "trueskillScoreLatLong20Duels.csv")
+#a folder where save the the top 50 pictures with highest scores and the 50 bottom pictures with lowest scores
 modelFolder = os.path.join(base_dir, "trueskill20Duels")
+# the two subfolder
 bottom_50_dir = os.path.join(modelFolder, "bottom50")
 top_50_dir = os.path.join(modelFolder, "top50")
 
