@@ -1,10 +1,14 @@
 # CroutiNET
 Street-level panoramic image walkability ranking using Deep learning
 
-# Score of walkability, administrative blocks in Ottawa downtown(ComparaisonCroutiNET)
+## Samples of Ottawa streetview generated pictures (DCGAN-CroutiNET)
+
+![DCGANCroutinet](/generator/samples.png)
+
+## Score of walkability, administrative blocks in Ottawa downtown(ComparaisonCroutiNET)
 
 ![ComparaisonCroutiNET](/ottawa/result/blockscores.jpg)
 
-# Score of Walkability, Paris roads (ScoreCroutiNET)
+## Score of Walkability, Paris roads (ScoreCroutiNET)
 
-![ComparaisonCroutiNET](/paris/croutiscoreColorInvert.jpg)
+![ScoreCroutiNET](/paris/croutiscoreColorInvert.jpg)
